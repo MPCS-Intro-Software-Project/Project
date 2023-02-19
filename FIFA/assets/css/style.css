@@ -56,6 +56,11 @@ p {
   color: #444;
 }
 
+@font-face{
+  font-family:'EA';
+  src: url("assets\fonts\EASPORTS15.ttf");
+  }
+
 h1,
 h2,
 h3,
