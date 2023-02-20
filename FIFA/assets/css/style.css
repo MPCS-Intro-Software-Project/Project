@@ -1169,6 +1169,14 @@ div#preloader {
   font-size: 13px;
 }
 
+.btn {
+  color: white;
+  background: #FFCC33;
+  /* height: 500px; */
+  margin-top: 500px;
+  position:relative;
+}
+
 .project-action-btn {
   display: block;
   height: 100%;
