@@ -14,6 +14,49 @@ const db = mysql.createPool({
 app.use(express.json());
 app.use(cors());
 
+app.post("/login/login", (req, res) => {
+  const values = [req.body.username, req.body.password];
+  const check_login =
+    "SELECT role FROM credential WHERE `username` = ? AND `password` = ?";
+  db.query(check_login, values, (err, data) => {
+    if (err) return res.json(err);
+    if (data.length == 0) return res.json("0/Wrong username or password/0");
+    return res.json("1/Successful Login/" + data[0].role);
+  });
+});
+
+app.post("/add_credential/add", (req, res) => {
+  const values = [req.body.username, req.body.password, req.body.role];
+  const check_dup = "SELECT * FROM credential WHERE `username` = ?";
+  db.query(check_dup, [values[0]], (err, data) => {
+    if (err) return res.json(err);
+    if (data.length > 0)
+      return res.json(
+        "Username already taken. Try another one or delete user with this username first."
+      );
+    const insertion =
+      "INSERT INTO credential (`username`,`password`, `role`) VALUES (?)";
+    db.query(insertion, [values], (err, data) => {
+      if (err) return res.json(err);
+      return res.json("Successfully added user!");
+    });
+  });
+});
+
+app.delete("/add_credential/delete/:username", (req, res) => {
+  const values = [req.params.username];
+  const check_dup = "SELECT * FROM credential WHERE `username` = ?";
+  db.query(check_dup, [values[0]], (err, data) => {
+    if (err) return res.json(err);
+    if (data.length == 0) return res.json("user doesn't exist.");
+    const deletion = "DELETE FROM credential WHERE `username` = ?";
+    db.query(deletion, [values[0]], (err, data) => {
+      if (err) return res.json(err);
+      return res.json("Successfully deleted user!");
+    });
+  });
+});
+
 app.post("/add/matches/add", (req, res) => {
   if (req.body.team1 == req.body.team2) {
     return res.json("same team on both side");
@@ -228,6 +271,32 @@ app.delete("/add/team/delete/:name/:year", (req, res) => {
 app.get("/", (req, res) => {
   const q = "SELECT * FROM books";
   db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+app.get("/get/tournament", (req, res) => {
+  const q = "SELECT * FROM tournament";
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+app.get("/get/matches/:year", (req, res) => {
+  const y = req.params.year;
+  const q = "SELECT * FROM matches WHERE year = ?";
+  db.query(q, [y], (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+app.get("/get/team/:year", (req, res) => {
+  const y = req.params.year;
+  const q = "SELECT * FROM team WHERE year = ?";
+  db.query(q, [y], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });

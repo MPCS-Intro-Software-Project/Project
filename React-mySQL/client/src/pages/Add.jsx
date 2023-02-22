@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Component } from "react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 //import { useNavigate } from "react-router-dom";
 import axios from "axios";
-const Add = () => {
+const Add = ({ role }) => {
   const [team, setTeam] = useState({
     name: "",
     year: null,
@@ -34,6 +35,7 @@ const Add = () => {
   });
 
   const handleTeamChange = (e) => {
+    console.log(role);
     setTeam((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   const handleTournamentAddChange = (e) => {
@@ -153,9 +155,22 @@ const Add = () => {
       console.log(err);
     }
   };
-
+  if (role === 0) {
+    return (
+      <div>
+        <button className="add_back">
+          <Link to={`/`}>Home</Link>
+        </button>
+        <h1>Access Denied. Login First.</h1>
+      </div>
+    );
+  }
+  //const { role } = this.props;
   return (
     <div className="form">
+      <button className="add_back">
+        <Link to={`/`}>Home</Link>
+      </button>
       <h1>Add Tournament</h1>
       <input
         type="number"
@@ -272,6 +287,7 @@ const Add = () => {
       />
       <button onClick={handleMatchesDeleteClick}>Delete</button>
       <p>{matchesDeleteMsg}</p>
+      <p>{role}</p>
     </div>
   );
 };
