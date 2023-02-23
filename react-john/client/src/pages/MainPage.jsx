@@ -76,9 +76,11 @@ const MainPage = ({ role, onSetRole }) => {
 
   return (
     <div className="form">
-      <Grid item xs={12}>
-        {tournament.map((tournament) => (
-          <MediaCard/>
+      <Grid container spacing={2}>
+        {tournament.map((tournament, idx) => (
+          <Grid key={idx} item xs={12} sm={6} md={4}>
+              <MediaCard content={tournament}/>
+          </Grid>
         ))}
       </Grid>
       {/*        

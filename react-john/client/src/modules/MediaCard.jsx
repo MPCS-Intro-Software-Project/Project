@@ -7,8 +7,9 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CardImg from '../images/player.jpg';
+import { Link } from "react-router-dom";
 
-export default function MediaCard() {
+export default function MediaCard({content}) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -18,16 +19,20 @@ export default function MediaCard() {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-         Tournament Here
+          {content.host} {content.year}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Teams and Winner here
+          Winner: {content.winner}
         </Typography>
       </CardContent>
       <CardActions>
         <Container>
+          <Link to={`/get/team/${content.year}`}>
             <Button variant="contained" size="medium" sx={{m: 1}}>Teams</Button>
+          </Link>
+          <Link to={`/get/matches/${content.year}`}>
             <Button variant="contained" size="medium" sx={{m: 1}}>Matches</Button>
+          </Link>
         </Container>
       </CardActions>
     </Card>
