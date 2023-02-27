@@ -31,7 +31,7 @@ export default function Header({role, handleLogoutClick}) {
     > Login </Button>
     ) : (
       <b></b>
-    );
+  );
 
   const logout_button =
     role === 0 ? (
@@ -48,7 +48,47 @@ export default function Header({role, handleLogoutClick}) {
         color: "inherit",
       }}
     > Logout </Button>
-    );
+  );
+
+  const modify_data_button =
+  role === 0 ? (
+    <b></b>
+  ) : (
+      <Button style={{
+        fontFamily: "Open Sans, sans-serif",
+        fontWeight: 700,
+        size: "18px",
+        marginLeft: "38px",
+      }}
+      onClick={() => {handleLogoutClick}}
+      {...{
+        key: "Login",
+        color: "inherit",
+        to: "/add",
+        component: RouterLink,
+      }}
+    > Modify Data </Button>
+  );
+
+  const add_credential_button =
+    role === 2 ? (
+      <Button style={{
+        fontFamily: "Open Sans, sans-serif",
+        fontWeight: 700,
+        size: "18px",
+        marginLeft: "38px",
+      }}
+      onClick={() => {handleLogoutClick}}
+      {...{
+        key: "jaskfakso",
+        color: "inherit",
+        to: "/add_credential",
+        component: RouterLink,
+      }}
+    > Add Credential </Button>
+    ) : (
+      <b></b>
+  );
 
   const displayDesktop = () => {
     return (
@@ -60,6 +100,8 @@ export default function Header({role, handleLogoutClick}) {
       {fifa_logo}
       <div>
         {login_button}
+        {modify_data_button}
+        {add_credential_button}
         {logout_button}
       </div>
       </Toolbar>

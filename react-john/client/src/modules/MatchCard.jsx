@@ -12,12 +12,20 @@ import { Link } from "react-router-dom";
 export default function MatchCard({content}) {
   return (
     <Card>
-      <CardContent sx={{ flexGrow: 1 }}>
+      <CardContent sx={{flexGrow: 1, width: "auto", margin: "auto"}} style=
+      {{ 
+        display: "flex",
+        justifyContent: "space-between",
+      }}>
+        <Typography gutterBottom variant="h6" component="div">
+          {content.stage}
+        </Typography>
+        <Typography gutterBottom variant="h6" component="div">
+          <b>{content.team1}</b> {content.score1}{" "}
+              | {content.score2} <b>{content.team2}</b>
+        </Typography>
         <Typography gutterBottom variant="h5" component="div">
           
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Winner: {content.score1}
         </Typography>
       </CardContent>
     </Card>

@@ -5,9 +5,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import MatchCard from "../modules/MatchCard";
 import { Container } from "@mui/system";
-import { Grid } from "@mui/material";
+import { Stack } from "@mui/material";
+import Header from "../modules/Header";
 
-const MatchesPage = () => {
+const MatchesPage = ({role, onSetRole}) => {
   const [tournament, setTournament] = useState([]);
 
   const navigate = useNavigate();
@@ -28,36 +29,29 @@ const MatchesPage = () => {
     fetchAllTournament();
   }, []);
 
+  const handleLogoutClick = async (e) => {
+    e.preventDefault();
+    try {
+      onSetRole(0);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <div>
-      <Container sx={{py: 12}} maxWidth="lg">
-        <Grid container spacing={2}>
+    <Container>
+      <Header role={role} handleLogoutClick={handleLogoutClick}/>
+
+      <Container sx={{justifyContent: "start", py: 20, width: '100%'}}>
+        <Stack spacing={2}>
           {tournament.map((tournament, idx) => (
-            <Grid item key={idx} xs={12} sm={12} md={12}>
-              <MatchCard content={tournament}/>
-            </Grid>
+            <MatchCard key={idx} content={tournament}/>
           ))}
-        </Grid> 
+        </Stack> 
       </Container>
-    {/*
-    <div className="form">
-      <button className="login_back">
-        <Link to={`/`}>Home</Link>
-      </button>
-      <h1>Matches of Year {year}</h1>
-      <div className="matches">
-        {tournament.map((tournament) => (
-          <div className="book" key={tournament.team1 + " " + tournament.team2}>
-            <p>
-              Stage: {tournament.stage} | {tournament.team1} {tournament.score1}{" "}
-              : {tournament.team2} {tournament.score2}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
-        */}
-    </div>
+    </Container>
   );
 };
+
 export default MatchesPage;

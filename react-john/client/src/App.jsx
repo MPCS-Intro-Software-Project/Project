@@ -44,7 +44,10 @@ class App extends Component {
               }
             />
             <Route path="/update/:id" element={<Update />} />
-            <Route path="/get/matches/:year" element={<MatchesPage />} />
+            <Route path="/get/matches/:year" element={<MatchesPage 
+              role={this.state.role}
+              onSetRole={this.handleSetRole}
+            />} />
             <Route path="/get/team/:year" element={<TeamPage />} />
           </Routes>
         </BrowserRouter>
