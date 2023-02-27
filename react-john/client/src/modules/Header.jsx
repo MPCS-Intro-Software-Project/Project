@@ -8,7 +8,7 @@ import Logo from '../images/FIFA_Logo.png'
 export default function Header({role, handleLogoutClick}) {
   const fifa_logo = (
     <div className="fifa-logo">
-      <a href="index.html">
+      <a href="/">
         <img src={Logo} style={{ maxHeight: 50, width: "auto", backgroundColor: "inherit"}} />
       </a>
     </div>
