@@ -17,7 +17,7 @@ export default function MediaCard({content}) {
         height="140"
         image={CardImg}
       />
-      <CardContent>
+      <CardContent sx={{ flexGrow: 1 }}>
         <Typography gutterBottom variant="h5" component="div">
           {content.host} {content.year}
         </Typography>

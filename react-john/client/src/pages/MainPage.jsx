@@ -2,9 +2,16 @@ import React, { Component } from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Box from '@mui/material/Box';
 import MediaCard from "../modules/MediaCard.jsx";
 import Grid from '@mui/material/Grid';
+import Container from '@mui/material/Container';
+import { AppBar } from "@mui/material";
+import { Toolbar } from "@mui/material";
+import { CssBaseline, Typography } from "@mui/material";
 import axios from "axios";
+import '../index.css'
+import Header from "../modules/Header.jsx";
 
 const MainPage = ({ role, onSetRole }) => {
   const [tournament, setTournament] = useState([]);
@@ -75,30 +82,48 @@ const MainPage = ({ role, onSetRole }) => {
     );
 
   return (
-    <div className="form">
-      <Grid container spacing={2}>
-        {tournament.map((tournament, idx) => (
-          <Grid key={idx} item xs={12} sm={6} md={4}>
+    <div className="tournament-page">
+
+      <Header/>
+      
+      <Box
+      sx={{
+        pt: 8,
+        pb: 6,
+      }}
+      >
+        <Container maxWidth="sm" sx={{margin: "auto"}}>
+          <Typography
+            component="h1"
+            variant="h2"
+            align="center"
+            color="text.primary"
+            gutterBottom
+          >
+            Album layout
+          </Typography>
+          <Typography variant="h5" align="center" color="text.secondary" paragraph>
+            Something short and leading about the collection below—its contents,
+            the creator, etc. Make it short and sweet, but not too short so folks
+            don&apos;t simply skip over it entirely.
+          </Typography>
+        </Container>
+      </Box>
+      
+      <Container sx={{
+        py: 8
+      }} maxWidth="lg">
+        <Grid container spacing={2}>
+          {tournament.map((tournament, idx) => (
+            <Grid item key={idx} xs={12} sm={6} md={4}>
               <MediaCard content={tournament}/>
-          </Grid>
-        ))}
-      </Grid>
-      {/*        
-      {tournament.map((tournament) => (
-        <div className="book" key={tournament.year}>
-          <p>
-            {tournament.year} {tournament.winner} {tournament.host}
-          </p>
-          <button className="teams">
-            <Link to={`/get/matches/${tournament.year}`}>Matches</Link>
-          </button>
-          <button className="matches">
-            <Link to={`/get/team/${tournament.year}`}>Team</Link>
-          </button>
-        </div>
-      ))}
-      */}
+            </Grid>
+          ))}
+        </Grid> 
+      </Container>
+    
     </div>
   );
 };
+
 export default MainPage;
