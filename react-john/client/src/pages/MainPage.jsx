@@ -40,59 +40,13 @@ const MainPage = ({ role, onSetRole }) => {
     }
   };
 
-  const login_button =
-    role === 0 ? (
-      <div>
-        <button className="login">
-          <Link to={`/login`}>Log In</Link>
-        </button>
-      </div>
-    ) : (
-      <b></b>
-    );
-  const logout_button =
-    role === 0 ? (
-      <b></b>
-    ) : (
-      <div>
-        <button className="logout" onClick={handleLogoutClick}>
-          Log Out
-        </button>
-      </div>
-    );
-  const modify_data_button =
-    role === 0 ? (
-      <b></b>
-    ) : (
-      <div>
-        <button className="add">
-          <Link to={`/add`}>Modify Data</Link>
-        </button>
-      </div>
-    );
-  const add_credential_button =
-    role === 2 ? (
-      <div>
-        <button className="add_credential">
-          <Link to={`/add_credential`}>Add Credential</Link>
-        </button>
-      </div>
-    ) : (
-      <b></b>
-    );
-
   return (
     <div className="tournament-page">
 
-      <Header/>
+      <Header role={role} handleLogoutClick={handleLogoutClick}/>
       
-      <Box
-      sx={{
-        pt: 8,
-        pb: 6,
-      }}
-      >
-        <Container maxWidth="sm" sx={{margin: "auto"}}>
+      <Box sx={{pt: 20, pb: 6}}>
+        <Container maxWidth="sm">
           <Typography
             component="h1"
             variant="h2"
@@ -110,9 +64,7 @@ const MainPage = ({ role, onSetRole }) => {
         </Container>
       </Box>
       
-      <Container sx={{
-        py: 8
-      }} maxWidth="lg">
+      <Container sx={{py: 12}} maxWidth="lg">
         <Grid container spacing={2}>
           {tournament.map((tournament, idx) => (
             <Grid item key={idx} xs={12} sm={6} md={4}>

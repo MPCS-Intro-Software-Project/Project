@@ -3,6 +3,10 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import MatchCard from "../modules/MatchCard";
+import { Container } from "@mui/system";
+import { Grid } from "@mui/material";
+
 const MatchesPage = () => {
   const [tournament, setTournament] = useState([]);
 
@@ -25,6 +29,17 @@ const MatchesPage = () => {
   }, []);
 
   return (
+    <div>
+      <Container sx={{py: 12}} maxWidth="lg">
+        <Grid container spacing={2}>
+          {tournament.map((tournament, idx) => (
+            <Grid item key={idx} xs={12} sm={12} md={12}>
+              <MatchCard content={tournament}/>
+            </Grid>
+          ))}
+        </Grid> 
+      </Container>
+    {/*
     <div className="form">
       <button className="login_back">
         <Link to={`/`}>Home</Link>
@@ -40,6 +55,8 @@ const MatchesPage = () => {
           </div>
         ))}
       </div>
+    </div>
+        */}
     </div>
   );
 };

@@ -96,4 +96,5 @@ const MainPage = ({ role, onSetRole }) => {
     </div>
   );
 };
+
 export default MainPage;

@@ -4,57 +4,51 @@ import Button from '@mui/material/Button'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Logo from '../images/FIFA_Logo.png'
-import { Container } from '@mui/system';
 
-const headersData = [
-  {
-    label: "Tournaments",
-    href: "/tournaments",
-  },
-  {
-    label: "Matches",
-    href: "/matches",
-  },
-  {
-    label: "Teams",
-    href: "/teams",
-  },
-  {
-    label: "Contact",
-    href: "/contact",
-  },
-]
-
-function Header() {
+export default function Header({role, handleLogoutClick}) {
   const fifa_logo = (
     <div className="fifa-logo">
       <a href="index.html">
-        <img src={Logo} style={{ maxHeight: 30 }}/>
+        <img src={Logo} style={{ maxHeight: 50, width: "auto", backgroundColor: "inherit"}} />
       </a>
     </div>
   )
 
-  const getNavButtons = () => {
-    return headersData.map(({ label, href }) => {
-      return (
-        <Button style={{
-            fontFamily: "Open Sans, sans-serif",
-            fontWeight: 700,
-            size: "18px",
-            marginLeft: "38px",
-          }}
-          {...{
-            key: label,
-            color: "inherit",
-            to: href,
-            component: RouterLink,
-          }}
-        >
-          {label}
-        </Button>
-      );
-    });
-  };
+  const login_button =
+    role === 0 ? (
+      <Button style={{
+        fontFamily: "Open Sans, sans-serif",
+        fontWeight: 700,
+        size: "18px",
+        marginLeft: "38px",
+      }}
+      {...{
+        key: "Login",
+        color: "inherit",
+        to: "/login",
+        component: RouterLink,
+      }}
+    > Login </Button>
+    ) : (
+      <b></b>
+    );
+
+  const logout_button =
+    role === 0 ? (
+      <b></b>
+    ) : (
+      <Button style={{
+        fontFamily: "Open Sans, sans-serif",
+        fontWeight: 700,
+        size: "18px",
+        marginLeft: "38px",
+      }}
+      onClick={() => {handleLogoutClick}}
+      {...{
+        color: "inherit",
+      }}
+    > Logout </Button>
+    );
 
   const displayDesktop = () => {
     return (
@@ -64,7 +58,10 @@ function Header() {
         justifyContent: "space-between",
       }}>
       {fifa_logo}
-      <div>{getNavButtons()}</div>
+      <div>
+        {login_button}
+        {logout_button}
+      </div>
       </Toolbar>
     )
   }
@@ -73,13 +70,11 @@ function Header() {
     <header id="header">
         <AppBar sx={{
           margin: "auto",
-          bgcolor: "#42a5f5", 
           paddingLeft: "120px", 
+          bgcolor: "#42a5f5",
           paddingRight: "80px"}}>
           {displayDesktop()}
         </AppBar>
     </header>
   )
 }
-
-export default Header
