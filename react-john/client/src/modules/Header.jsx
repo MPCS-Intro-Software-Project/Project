@@ -109,14 +109,13 @@ export default function Header({role, handleLogoutClick}) {
   }
 
   return (
-    <header id="header">
-        <AppBar sx={{
-          margin: "auto",
-          paddingLeft: "120px", 
-          bgcolor: "#42a5f5",
-          paddingRight: "80px"}}>
-          {displayDesktop()}
-        </AppBar>
-    </header>
+    <AppBar sx={{
+      margin: "auto",
+      paddingLeft: "120px", 
+      bgcolor: "#42a5f5",
+      paddingRight: "80px"
+      }}>
+      {displayDesktop()}
+    </AppBar>
   )
 }

@@ -41,7 +41,7 @@ const MainPage = ({ role, onSetRole }) => {
   };
 
   return (
-    <div className="tournament-page">
+    <div className="tournament-page" style={{alignSelf: "flex-start"}}>
 
       <Header role={role} handleLogoutClick={handleLogoutClick}/>
       

@@ -7,6 +7,7 @@ import MatchCard from "../modules/MatchCard";
 import { Container } from "@mui/system";
 import { Stack } from "@mui/material";
 import Header from "../modules/Header";
+import Typography from "@mui/material/Typography"
 
 const MatchesPage = ({role, onSetRole}) => {
   const [tournament, setTournament] = useState([]);
@@ -40,11 +41,13 @@ const MatchesPage = ({role, onSetRole}) => {
   };
 
   return (
-    <Container>
+    <Container sx={{height: "100vh", maxWidth: '100% !important', mt: "200px", mb: "20px", overflowY: "auto"}}>
       <Header role={role} handleLogoutClick={handleLogoutClick}/>
 
-      <Container sx={{justifyContent: "start", py: 20, width: '100%'}}>
-        <Stack spacing={2}>
+      <Typography variant="h2"> Matches </Typography>
+
+      <Container sx={{maxHeight: "75vh", justifyContent: "flex-start", maxWidth: '100% !important'}}>
+        <Stack spacing={2} sx={{margin: "auto", width: "50%", py: "20px"}}>
           {tournament.map((tournament, idx) => (
             <MatchCard key={idx} content={tournament}/>
           ))}
