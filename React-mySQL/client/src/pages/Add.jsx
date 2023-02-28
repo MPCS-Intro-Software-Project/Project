@@ -63,6 +63,7 @@ const Add = ({ role }) => {
     team2: "",
     stage: "default",
     year: null,
+    date: null,
   });
 
   const handleTeamChange = (e) => {
@@ -194,7 +195,9 @@ const Add = ({ role }) => {
             "/" +
             matchesDelete.stage +
             "/" +
-            matchesDelete.year
+            matchesDelete.year +
+            "/" +
+            matchesDelete.date
         )
         .then((response) => {
           setMatchesDeleteMsg(response.data);
@@ -656,6 +659,14 @@ const Add = ({ role }) => {
           placeholder="team2"
           onChange={handleMatchesDeleteChange}
           name="team2"
+        />
+        <p></p>
+        <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date </b>
+        <input
+          type="date"
+          placeholder="date"
+          onChange={handleMatchesDeleteChange}
+          name="date"
         />
         <p></p>
         <b>

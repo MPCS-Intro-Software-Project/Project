@@ -210,59 +210,65 @@ app.post("/add/matches/update", (req, res) => {
     });
   });
 });
-app.delete("/add/matches/delete/:team1/:team2/:stage/:year", (req, res) => {
-  if (req.params.team1 == req.params.team2) {
-    return res.json("same team on both side");
-  }
-  const values = [
-    req.params.team1 < req.params.team2 ? req.params.team1 : req.params.team2,
-    req.params.team1 < req.params.team2 ? req.params.team2 : req.params.team1,
-    req.params.stage,
-    parseInt(req.params.year),
-  ];
-  const check_tournament = "SELECT * FROM tournament WHERE `year` = ?";
-  db.query(check_tournament, values[3], (err, data) => {
-    if (err) return res.json(err);
-    if (data.length == 0)
-      return res.json(
-        "No tournament in year: " + values[3] + ". Add Tournament First"
-      );
-    const team_present = "SELECT * FROM team WHERE `year` = ? AND `name` = ?";
-    db.query(team_present, [values[3], values[0]], (err, data) => {
+app.delete(
+  "/add/matches/delete/:team1/:team2/:stage/:year/:date",
+  (req, res) => {
+    if (req.params.team1 == req.params.team2) {
+      return res.json("same team on both side");
+    }
+    const values = [
+      req.params.team1 < req.params.team2 ? req.params.team1 : req.params.team2,
+      req.params.team1 < req.params.team2 ? req.params.team2 : req.params.team1,
+      req.params.stage,
+      parseInt(req.params.year),
+      req.params.date,
+    ];
+    const check_tournament = "SELECT * FROM tournament WHERE `year` = ?";
+    db.query(check_tournament, values[3], (err, data) => {
       if (err) return res.json(err);
       if (data.length == 0)
-        return res.json("Team " + values[0] + " not present. Add team first.");
-      db.query(team_present, [values[3], values[1]], (err, data) => {
+        return res.json(
+          "No tournament in year: " + values[3] + ". Add Tournament First"
+        );
+      const team_present = "SELECT * FROM team WHERE `year` = ? AND `name` = ?";
+      db.query(team_present, [values[3], values[0]], (err, data) => {
         if (err) return res.json(err);
         if (data.length == 0)
           return res.json(
-            "Team " + values[1] + " not present. Add team first."
+            "Team " + values[0] + " not present. Add team first."
           );
-        const match_present =
-          "SELECT * FROM matches WHERE `year` = ? AND `team1` = ? AND `team2` = ? AND `stage` = ?";
-        db.query(
-          match_present,
-          [values[3], values[0], values[1], values[2]],
-          (err, data) => {
-            if (err) return res.json(err);
-            if (data.length == 0)
-              return res.json("No such match. Add match first.");
-            const q =
-              "DELETE FROM matches WHERE `year` = ? AND `team1` = ? AND `team2` = ? AND `stage` = ?";
-            db.query(
-              q,
-              [values[3], values[0], values[1], values[2]],
-              (err, data) => {
-                if (err) return res.json(err);
-                return res.json("Match has been Deleted");
-              }
+        db.query(team_present, [values[3], values[1]], (err, data) => {
+          if (err) return res.json(err);
+          if (data.length == 0)
+            return res.json(
+              "Team " + values[1] + " not present. Add team first."
             );
-          }
-        );
+          const match_present =
+            "SELECT * FROM matches WHERE `year` = ? AND `team1` = ? AND `team2` = ? AND `date` = ?";
+          db.query(
+            match_present,
+            [values[3], values[0], values[1], values[4]],
+            (err, data) => {
+              if (err) return res.json(err);
+              if (data.length == 0)
+                return res.json("No such match. Add match first.");
+              const q =
+                "DELETE FROM matches WHERE `year` = ? AND `team1` = ? AND `team2` = ? AND `date` = ?";
+              db.query(
+                q,
+                [values[3], values[0], values[1], values[4]],
+                (err, data) => {
+                  if (err) return res.json(err);
+                  return res.json("Match has been Deleted");
+                }
+              );
+            }
+          );
+        });
       });
     });
-  });
-});
+  }
+);
 /*
 const q = "DELETE FROM tournament WHERE `year` = ?";
     db.query(q, [year], (err, data) => {
