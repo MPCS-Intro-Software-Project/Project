@@ -61,13 +61,25 @@ app.post("/add/matches/add", (req, res) => {
   if (req.body.team1 == req.body.team2) {
     return res.json("same team on both side");
   }
+  if (parseInt(req.body.hour) >= 24) {
+    return res.json("Please enter a valid time (hour < 24, minute < 60)");
+  }
+  if (parseInt(req.body.minute) >= 60) {
+    return res.json("Please enter a valid time (hour < 24, minute < 60)");
+  }
   const values = [
     req.body.team1 < req.body.team2 ? req.body.team1 : req.body.team2,
     req.body.team1 < req.body.team2 ? req.body.team2 : req.body.team1,
     req.body.team1 < req.body.team2 ? req.body.score1 : req.body.score2,
     req.body.team1 < req.body.team2 ? req.body.score2 : req.body.score1,
     req.body.stage,
-    req.body.year,
+    parseInt(req.body.year),
+    req.body.date,
+    parseInt(req.body.hour),
+    parseInt(req.body.minute),
+    req.body.city,
+    req.body.temperature,
+    req.body.tickets,
   ];
   const check_tournament = "SELECT * FROM tournament WHERE `year` = ?";
   db.query(check_tournament, values[5], (err, data) => {
@@ -88,16 +100,16 @@ app.post("/add/matches/add", (req, res) => {
             "Team " + values[1] + " not present. Add team first."
           );
         const match_present =
-          "SELECT * FROM matches WHERE `year` = ? AND `team1` = ? AND `team2` = ? AND `stage` = ?";
+          "SELECT * FROM matches WHERE `year` = ? AND `team1` = ? AND `team2` = ? AND `stage` = ? AND `date` = ?";
         db.query(
           match_present,
-          [values[5], values[0], values[1], values[4]],
+          [values[5], values[0], values[1], values[4], values[6]],
           (err, data) => {
             if (err) return res.json(err);
             if (data.length > 0)
               return res.json("Duplicate match. Delete match first.");
             const q =
-              "INSERT INTO matches (`team1`, `team2`, `score1`, `score2`, `stage`, `year`) VALUES (?)";
+              "INSERT INTO matches (`team1`, `team2`, `score1`, `score2`, `stage`, `year`, `date`, `hour`, `minute`, `city`, `temperature`, `tickets`) VALUES (?)";
             db.query(q, [values], (err, data) => {
               if (err) return res.json(err);
               return res.json("Match has been Added");
@@ -108,7 +120,96 @@ app.post("/add/matches/add", (req, res) => {
     });
   });
 });
+app.post("/add/matches/update", (req, res) => {
+  if (req.body.team1 == req.body.team2) {
+    return res.json("same team on both side");
+  }
+  const values = [
+    req.body.team1 < req.body.team2 ? req.body.team1 : req.body.team2,
+    req.body.team1 < req.body.team2 ? req.body.team2 : req.body.team1,
+    req.body.team1 < req.body.team2 ? req.body.score1 : req.body.score2,
+    req.body.team1 < req.body.team2 ? req.body.score2 : req.body.score1,
+    parseInt(req.body.year),
+    req.body.date,
+  ];
+  const check_tournament = "SELECT * FROM tournament WHERE `year` = ?";
+  db.query(check_tournament, values[4], (err, data) => {
+    if (err) return res.json(err);
+    if (data.length == 0)
+      return res.json(
+        "No tournament in year: " + values[4] + ". Add Tournament First"
+      );
+    const team_present = "SELECT * FROM team WHERE `year` = ? AND `name` = ?";
+    db.query(team_present, [values[4], values[0]], (err, data) => {
+      if (err) return res.json(err);
+      if (data.length == 0)
+        return res.json("Team " + values[0] + " not present. Add team first.");
+      db.query(team_present, [values[4], values[1]], (err, data) => {
+        if (err) return res.json(err);
+        if (data.length == 0)
+          return res.json(
+            "Team " + values[1] + " not present. Add team first."
+          );
+        const match_present =
+          "SELECT * FROM matches WHERE `year` = ? AND `team1` = ? AND `team2` = ? AND `date` = ?";
+        db.query(
+          match_present,
+          [values[4], values[0], values[1], values[5]],
+          (err, data) => {
+            if (err) return res.json(err);
+            if (data.length == 0)
+              return res.json("No such match. Add match first.");
+            console.log(data[0]);
+            const new_values = [
+              req.body.team1 < req.body.team2 ? req.body.team1 : req.body.team2,
+              req.body.team1 < req.body.team2 ? req.body.team2 : req.body.team1,
+              req.body.team1 < req.body.team2
+                ? req.body.score1
+                : req.body.score2,
+              req.body.team1 < req.body.team2
+                ? req.body.score2
+                : req.body.score1,
+              data[0].stage,
+              data[0].year,
+              data[0].date,
+              data[0].hour,
+              data[0].minute,
+              data[0].city,
+              data[0].temperature,
+              data[0].tickets,
+            ];
+            /*console.log(
+              new_values[5] +
+                " " +
+                new_values[0] +
+                " " +
+                new_values[1] +
+                " " +
+                new_values[6]
+            );*/
+            const delete_query =
+              "DELETE FROM matches WHERE `year` = ? AND `team1` = ? AND `team2` = ? AND `date` = ?";
+            db.query(
+              delete_query,
+              [new_values[5], new_values[0], new_values[1], new_values[6]],
+              (err, data) => {
+                if (err) return res.json(err);
 
+                const q =
+                  "INSERT INTO matches (`team1`, `team2`, `score1`, `score2`, `stage`, `year`, `date`, `hour`, `minute`, `city`, `temperature`, `tickets`) VALUES (?)";
+                db.query(q, [new_values], (err, data) => {
+                  if (err) return res.json(err);
+                  return res.json("Match has been Updated");
+                });
+                //return res.json("ok");
+              }
+            );
+          }
+        );
+      });
+    });
+  });
+});
 app.delete("/add/matches/delete/:team1/:team2/:stage/:year", (req, res) => {
   if (req.params.team1 == req.params.team2) {
     return res.json("same team on both side");

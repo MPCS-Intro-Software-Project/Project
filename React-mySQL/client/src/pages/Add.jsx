@@ -40,6 +40,12 @@ const Add = ({ role }) => {
     score2: null,
     stage: "default",
     year: null,
+    date: null,
+    hour: null,
+    minute: null,
+    city: "",
+    temperature: null,
+    tickets: null,
   });
 
   const [matchesUpdate, setMatchesUpdate] = useState({
@@ -49,6 +55,7 @@ const Add = ({ role }) => {
     score2: null,
     stage: "default",
     year: null,
+    date: null,
   });
 
   const [matchesDelete, setMatchesDelete] = useState({
@@ -77,6 +84,7 @@ const Add = ({ role }) => {
     }));
   };
   const handleMatchesAddChange = (e) => {
+    //console.log(matchesAdd);
     setMatchesAdd((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   const handleMatchesUpdateChange = (e) => {
@@ -121,6 +129,20 @@ const Add = ({ role }) => {
         setMatchesUpdateMsg("all fields must be non-empty");
         return;
       }
+      await axios
+        .post("http://localhost:8800/add/matches/update", matchesUpdate)
+        .then((response) => {
+          if (response.data === "Match has been Added") {
+            setMatchesUpdateMsg("Match has been Updated");
+          } else {
+            setMatchesUpdateMsg(response.data);
+          }
+        });
+      //navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+    /*
       let delete_data = "";
       await axios
         .delete(
@@ -153,7 +175,7 @@ const Add = ({ role }) => {
       //navigate("/");
     } catch (err) {
       console.log(err);
-    }
+    }*/
   };
 
   const handleMatchesDeleteClick = async (e) => {
@@ -286,7 +308,9 @@ const Add = ({ role }) => {
   if (role === 2) {
     return (
       <div>
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+        <b>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </b>
         <button className="add_back">
           <Link to={`/`}>Home</Link>
         </button>
@@ -331,7 +355,17 @@ const Add = ({ role }) => {
           name="score2"
         />
         <p></p>
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+        <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date </b>
+        <input
+          type="date"
+          placeholder="date"
+          onChange={handleMatchesUpdateChange}
+          name="date"
+        />
+        <p></p>
+        <b>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </b>
         <button onClick={handleMatchesUpdateClick}>Update</button>
         <p>{matchesUpdateMsg}</p>
       </div>
@@ -341,7 +375,9 @@ const Add = ({ role }) => {
   return (
     <div className="form" style={{ height: 600 }}>
       <div>
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+        <b>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </b>
         <button className="add_back">
           <Link to={`/`}>Home</Link>
         </button>
@@ -370,7 +406,9 @@ const Add = ({ role }) => {
           name="host"
         />
         <p></p>
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+        <b>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </b>
         <button onClick={handleTournamentAddClick}>Add</button>
         <p>{tournamentAddMsg}</p>
 
@@ -399,7 +437,9 @@ const Add = ({ role }) => {
           name="host"
         />
         <p></p>
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+        <b>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </b>
         <button onClick={handleTournamentUpdateClick}>Update</button>
         <p>{tournamentUpdateMsg}</p>
 
@@ -412,7 +452,9 @@ const Add = ({ role }) => {
           name="year"
         />
         <p></p>
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+        <b>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </b>
         <button onClick={handleTournamentDeleteClick}>Delete</button>
         <p>{tournamentDeleteMsg}</p>
       </div>
@@ -434,7 +476,9 @@ const Add = ({ role }) => {
           name="name"
         />
         <p></p>
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+        <b>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </b>
         <button onClick={handleTeamAddClick}>Add</button>
         <button onClick={handleTeamDeleteClick}>Delete</button>
         <p>{teamMsg}</p>
@@ -480,7 +524,57 @@ const Add = ({ role }) => {
           name="score2"
         />
         <p></p>
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+        <b>date </b>
+        <input
+          type="date"
+          placeholder="date"
+          onChange={handleMatchesAddChange}
+          name="date"
+        />
+        <p></p>
+        <b>start time </b>
+        <input
+          type="number"
+          placeholder="hour"
+          onChange={handleMatchesAddChange}
+          name="hour"
+        />
+        <b> : </b>
+        <input
+          type="number"
+          placeholder="minute"
+          onChange={handleMatchesAddChange}
+          name="minute"
+        />
+        <p></p>
+        <b>&nbsp;&nbsp;&nbsp;&nbsp;city </b>
+        <input
+          type="text"
+          placeholder="city"
+          onChange={handleMatchesAddChange}
+          name="city"
+        />
+        <p></p>
+        <b>temperature </b>
+        <input
+          type="number"
+          placeholder="temperature"
+          onChange={handleMatchesAddChange}
+          name="temperature"
+        />
+        <b>F</b>
+        <p></p>
+        <b>tickets sold </b>
+        <input
+          type="number"
+          placeholder="tickets"
+          onChange={handleMatchesAddChange}
+          name="tickets"
+        />
+        <p></p>
+        <b>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </b>
         <button onClick={handleMatchesAddClick}>Add</button>
         <p>{matchesAddMsg}</p>
 
@@ -525,7 +619,17 @@ const Add = ({ role }) => {
           name="score2"
         />
         <p></p>
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+        <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;date </b>
+        <input
+          type="date"
+          placeholder="date"
+          onChange={handleMatchesUpdateChange}
+          name="date"
+        />
+        <p></p>
+        <b>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </b>
         <button onClick={handleMatchesUpdateClick}>Update</button>
         <p>{matchesUpdateMsg}</p>
 
@@ -554,7 +658,9 @@ const Add = ({ role }) => {
           name="team2"
         />
         <p></p>
-        <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+        <b>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </b>
         <button onClick={handleMatchesDeleteClick}>Delete</button>
         <p>{matchesDeleteMsg}</p>
       </div>
