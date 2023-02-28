@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-const Login = ({ role, onSetRole }) => {
+const Login = ({ role, onSetRole, username, onSetUsername }) => {
   const navigate = useNavigate();
   const [credential, setCredential] = useState({
     username: "",
@@ -12,7 +12,6 @@ const Login = ({ role, onSetRole }) => {
   });
 
   const handleCredentialChange = (e) => {
-    console.log(role);
     setCredential((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -30,6 +29,7 @@ const Login = ({ role, onSetRole }) => {
           const success = parseInt(listAndRole[0]);
           setCredentialMsg(listAndRole[1]);
           if (success > 0) {
+            onSetUsername(credential.username);
             onSetRole(parseInt(listAndRole[2]));
             navigate("/");
           }
@@ -62,9 +62,9 @@ const Login = ({ role, onSetRole }) => {
         onChange={handleCredentialChange}
         name="password"
       />
+      <p></p>
       <button onClick={handleLoginClick}>Login</button>
       <p>{credentialMsg}</p>
-      <p>{role}</p>
     </div>
   );
 };

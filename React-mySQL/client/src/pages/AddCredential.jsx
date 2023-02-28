@@ -3,11 +3,20 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 //import { useNavigate } from "react-router-dom";
 import axios from "axios";
-const AddCredential = ({ role }) => {
+const AddCredential = ({ role, username, onSetUsername }) => {
+  const hasEmpty = (dict) => {
+    const list = Object.values(dict);
+    for (let i = 0; i < list.length; i++) {
+      if (list[i] === null || list[i] === "") {
+        return true;
+      }
+    }
+    return false;
+  };
   const [credentialAdd, setCredentialAdd] = useState({
     username: "",
     password: "",
-    new_role: null,
+    role: null,
   });
 
   const [credentialDelete, setCredentialDelete] = useState({
@@ -32,6 +41,14 @@ const AddCredential = ({ role }) => {
   const handleCredentialAddClick = async (e) => {
     e.preventDefault();
     try {
+      if (hasEmpty(credentialAdd)) {
+        setCredentialAddMsg("all fields must be non-empty");
+        return;
+      }
+      if (credentialAdd.role != 1 && credentialAdd.role != 2) {
+        setCredentialAddMsg("role can only be 1 or 2");
+        return;
+      }
       await axios
         .post("http://localhost:8800/add_credential/add", credentialAdd)
         .then((response) => {
@@ -46,6 +63,15 @@ const AddCredential = ({ role }) => {
   const handleCredentialDeleteClick = async (e) => {
     e.preventDefault();
     try {
+      if (hasEmpty(credentialDelete)) {
+        setCredentialDeleteMsg("all fields must be non-empty");
+        return;
+      }
+      //console.log(username + " " + credentialDelete.username);
+      if(username === credentialDelete.username){
+        setCredentialDeleteMsg("cannot delete self");
+        return;
+      }
       await axios
         .delete(
           "http://localhost:8800/add_credential/delete/" +
@@ -58,13 +84,13 @@ const AddCredential = ({ role }) => {
       console.log(err);
     }
   };
-  if (role !== 2) {
+  if (role !== 1) {
     return (
       <div>
         <button className="add_back">
           <Link to={`/`}>Home</Link>
         </button>
-        <h1>Access Denied. Login as Operator First.</h1>
+        <h1>Access Denied. Login as Admin First.</h1>
       </div>
     );
   }
@@ -75,7 +101,6 @@ const AddCredential = ({ role }) => {
         <Link to={`/`}>Home</Link>
       </button>
       <h1>Add Credential</h1>
-      <p>For role: Enter 1 for admin, 2 for operator.</p>
       <p>username: </p>
       <input
         type="text"
@@ -92,13 +117,14 @@ const AddCredential = ({ role }) => {
         name="password"
       />
       <p></p>
-      <p>role: </p>
+      <p>role: 1 for admin, 2 for operator</p>
       <input
         type="number"
         placeholder="role"
         onChange={handleCredentialAddChange}
         name="role"
       />
+      <p></p>
       <button onClick={handleCredentialAddClick}>Add</button>
       <p>{credentialAddMsg}</p>
 
@@ -110,10 +136,10 @@ const AddCredential = ({ role }) => {
         onChange={handleCredentialDeleteChange}
         name="username"
       />
+      <p></p>
       <button onClick={handleCredentialDeleteClick}>Delete</button>
       <p>{credentialDeleteMsg}</p>
 
-      <p>{role}</p>
     </div>
   );
 };

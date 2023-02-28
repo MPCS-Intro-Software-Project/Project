@@ -2,9 +2,20 @@ import React, { Component } from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Box from '@mui/material/Box';
+import MediaCard from "../modules/MediaCard.jsx";
+import Grid from '@mui/material/Grid';
+import Container from '@mui/material/Container';
+import { AppBar } from "@mui/material";
+import { Toolbar } from "@mui/material";
+import { CssBaseline, Typography } from "@mui/material";
 import axios from "axios";
+import '../index.css'
+import Header from "../modules/Header.jsx";
+
 const MainPage = ({ role, onSetRole }) => {
   const [tournament, setTournament] = useState([]);
+
   useEffect(() => {
     const fetchAllTournament = async () => {
       try {
@@ -29,71 +40,40 @@ const MainPage = ({ role, onSetRole }) => {
     }
   };
 
-  const login_button =
-    role === 0 ? (
-      <div>
-        <button className="login">
-          <Link to={`/login`}>Log In</Link>
-        </button>
-      </div>
-    ) : (
-      <b></b>
-    );
-  const logout_button =
-    role === 0 ? (
-      <b></b>
-    ) : (
-      <div>
-        <button className="logout" onClick={handleLogoutClick}>
-          Log Out
-        </button>
-      </div>
-    );
-  const modify_data_button =
-    role === 0 ? (
-      <b></b>
-    ) : (
-      <div>
-        <button className="add">
-          <Link to={`/add`}>Modify Data</Link>
-        </button>
-      </div>
-    );
-  const add_credential_button =
-    role === 2 ? (
-      <div>
-        <button className="add_credential">
-          <Link to={`/add_credential`}>Add Credential</Link>
-        </button>
-      </div>
-    ) : (
-      <b></b>
-    );
   return (
-    <div className="form">
-      {login_button}
-      {modify_data_button}
-      {add_credential_button}
-      {logout_button}
+    <div className="tournament-page" style={{alignSelf: "flex-start"}}>
+
+      <Header role={role} onLogoutClick={handleLogoutClick}/>
       <p></p>
-      <p>{role}</p>
-      <h1>Tournaments</h1>
-      <div className="tournament">
-        {tournament.map((tournament) => (
-          <div className="book" key={tournament.year}>
-            <p>
-              {tournament.year} {tournament.host} {tournament.host}
-            </p>
-            <button className="teams">
-              <Link to={`/get/matches/${tournament.year}`}>Matches</Link>
-            </button>
-            <button className="matches">
-              <Link to={`/get/team/${tournament.year}`}>Team</Link>
-            </button>
-          </div>
-        ))}
-      </div>
+      <Box sx={{pt: 20, pb: 6}}>
+        <Container maxWidth="sm">
+          <Typography
+            component="h1"
+            variant="h2"
+            align="center"
+            color="text.primary"
+            gutterBottom
+          >
+            Tournaments
+          </Typography>
+          <Typography variant="h5" align="center" color="text.secondary" paragraph>
+            Welcome to FIFA! More text can go here.
+          </Typography>
+        </Container>
+      </Box>
+      
+      <Container sx={{py: 12}} maxWidth="lg">
+        <Grid container spacing={2}>
+          {tournament.map((tournament, idx) => (
+            <Grid item key={idx} xs={12} sm={6} md={4}>
+              <MediaCard content={tournament}/>
+            </Grid>
+          ))}
+        </Grid> 
+      </Container>
+    
     </div>
   );
 };
+
 export default MainPage;

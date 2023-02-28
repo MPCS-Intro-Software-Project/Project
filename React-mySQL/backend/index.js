@@ -189,6 +189,27 @@ app.post("/add/tournament/add", (req, res) => {
   });
 });
 
+app.post("/add/tournament/update", (req, res) => {
+  const values = [req.body.year, req.body.winner, req.body.host];
+  const check_tournament = "SELECT * FROM tournament WHERE `year` = ?";
+  db.query(check_tournament, values[0], (err, data) => {
+    if (err) return res.json(err);
+    if (data.length == 0)
+      return res.json(
+        "No tournament in year: " + values[0] + ". Add Tournament First"
+      );
+    const delete_tournament = "DELETE FROM tournament WHERE `year` = ?";
+    db.query(delete_tournament, [values[0]], (err, data) => {
+      if (err) return res.json(err);
+      const q = "INSERT INTO tournament (`year`, `winner`, `host`) VALUES (?)";
+      db.query(q, [values], (err, data) => {
+        if (err) return res.json(err);
+        return res.json("Tournament has been Updated");
+      });
+    });
+  });
+});
+
 app.delete("/add/tournament/delete/:year", (req, res) => {
   const year = parseInt(req.params.year);
   const check_tournament = "SELECT * FROM tournament WHERE `year` = ?";
@@ -277,7 +298,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/get/tournament", (req, res) => {
-  const q = "SELECT * FROM tournament";
+  const q = "SELECT * FROM tournament ORDER BY `year` DESC";
   db.query(q, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);

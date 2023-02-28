@@ -3,7 +3,10 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-const TeamPage = () => {
+import Header from "../modules/Header";
+import Typography from "@mui/material/Typography";
+import { Container } from "@mui/system";
+const TeamPage = ({role, onSetRole}) => {
   const [tournament, setTournament] = useState([]);
 
   const navigate = useNavigate();
@@ -21,9 +24,19 @@ const TeamPage = () => {
     };
     fetchAllTournament();
   }, []);
-
+  const handleLogoutClick = async (e) => {
+    e.preventDefault();
+    try {
+      onSetRole(0);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
-    <div className="form">
+    <Container sx={{height: "100vh", maxWidth: '100% !important', mt: "200px", mb: "20px", overflowY: "auto"}}>
+      <Header role={role} handleLogoutClick={handleLogoutClick}/>
+      <p></p>
       <button className="login_back">
         <Link to={`/`}>Home</Link>
       </button>
@@ -35,7 +48,7 @@ const TeamPage = () => {
           </div>
         ))}
       </div>
-    </div>
+    </Container>
   );
 };
 export default TeamPage;

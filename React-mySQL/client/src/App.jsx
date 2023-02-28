@@ -14,9 +14,13 @@ import React, { Component } from "react";
 class App extends Component {
   state = {
     role: 0,
+    username: "",
   };
   handleSetRole = (newRole) => {
     this.setState({ role: newRole });
+  };
+  handleSetUsername = (newUsername) => {
+    this.setState({ username: newUsername });
   };
   render() {
     return (
@@ -35,17 +39,20 @@ class App extends Component {
             <Route path="/add" element={<Add role={this.state.role} />} />
             <Route
               path="/add_credential"
-              element={<AddCredential role={this.state.role} />}
+              element={<AddCredential role={this.state.role} username = {this.state.username} onSetUsername={this.handleSetUsername}/>}
             />
             <Route
               path="/login"
               element={
-                <Login role={this.state.role} onSetRole={this.handleSetRole} />
+                <Login role={this.state.role} onSetRole={this.handleSetRole} username = {this.state.username} onSetUsername={this.handleSetUsername}/>
               }
             />
             <Route path="/update/:id" element={<Update />} />
-            <Route path="/get/matches/:year" element={<MatchesPage />} />
-            <Route path="/get/team/:year" element={<TeamPage />} />
+            <Route path="/get/matches/:year" element={<MatchesPage 
+              role={this.state.role}
+              onSetRole={this.handleSetRole}
+            />} />
+            <Route path="/get/team/:year" element={<TeamPage role={this.state.role} onSetRole={this.handleSetRole}/>} />
           </Routes>
         </BrowserRouter>
       </div>

@@ -3,7 +3,13 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-const MatchesPage = () => {
+import MatchCard from "../modules/MatchCard";
+import { Container } from "@mui/system";
+import { Stack } from "@mui/material";
+import Header from "../modules/Header";
+import Typography from "@mui/material/Typography"
+
+const MatchesPage = ({role, onSetRole}) => {
   const [tournament, setTournament] = useState([]);
 
   const navigate = useNavigate();
@@ -24,23 +30,32 @@ const MatchesPage = () => {
     fetchAllTournament();
   }, []);
 
+  const handleLogoutClick = async (e) => {
+    e.preventDefault();
+    try {
+      onSetRole(0);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <div className="form">
-      <button className="login_back">
-        <Link to={`/`}>Home</Link>
-      </button>
-      <h1>Matches of Year {year}</h1>
-      <div className="matches">
-        {tournament.map((tournament) => (
-          <div className="book" key={tournament.team1 + " " + tournament.team2}>
-            <p>
-              Stage: {tournament.stage} | {tournament.team1} {tournament.score1}{" "}
-              : {tournament.team2} {tournament.score2}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
+    <Container sx={{height: "100vh", maxWidth: '100% !important', mt: "200px", mb: "20px", overflowY: "auto"}}>
+      <Header role={role} handleLogoutClick={handleLogoutClick}/>
+      <p></p>
+      <Link to={`/`}>Home</Link>
+      <Typography variant="h2"> Matches </Typography>
+
+      <Container sx={{maxHeight: "75vh", justifyContent: "flex-start", maxWidth: '100% !important'}}>
+        <Stack spacing={2} sx={{margin: "auto", width: "50%", py: "20px"}}>
+          {tournament.map((tournament, idx) => (
+            <MatchCard key={idx} content={tournament}/>
+          ))}
+        </Stack> 
+      </Container>
+    </Container>
   );
 };
+
 export default MatchesPage;
