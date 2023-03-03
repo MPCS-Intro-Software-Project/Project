@@ -18,20 +18,20 @@ export default function MediaCard({content}) {
         image={CardImg}
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h5" component="div" fontFamily={"Exo"} fontWeight={"bold"}>
           {content.host} {content.year}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" fontFamily={"Exo"}>
           Winner: {content.winner}
         </Typography>
       </CardContent>
       <CardActions>
         <Container>
           <Link to={`/get/team/${content.year}`}>
-            <Button variant="contained" size="medium" sx={{m: 1}}>Teams</Button>
+            <Button variant="contained" size="medium" sx={{m: 1, fontFamily:"Exo"}} >Teams</Button>
           </Link>
           <Link to={`/get/matches/${content.year}`}>
-            <Button variant="contained" size="medium" sx={{m: 1}}>Matches</Button>
+            <Button variant="contained" size="medium" sx={{m: 1, fontFamily: "Exo"}} >Matches</Button>
           </Link>
         </Container>
       </CardActions>

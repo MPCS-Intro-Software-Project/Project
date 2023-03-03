@@ -8,6 +8,8 @@ import { Container } from "@mui/system";
 import { Stack } from "@mui/material";
 import Header from "../modules/Header";
 import Typography from "@mui/material/Typography"
+import Button from '@mui/material/Button';
+
 
 const MatchesPage = ({role, onSetRole}) => {
   const [tournament, setTournament] = useState([]);
@@ -44,8 +46,12 @@ const MatchesPage = ({role, onSetRole}) => {
     <Container sx={{height: "100vh", maxWidth: '100% !important', mt: "200px", mb: "20px", overflowY: "auto"}}>
       <Header role={role} handleLogoutClick={handleLogoutClick}/>
       <p></p>
-      <Link to={`/`}>Home</Link>
-      <Typography variant="h2"> Matches </Typography>
+
+      <Link to={`/`}>
+            <Button variant="contained" size="medium" sx={{m: 1, fontFamily:"Exo"}} >Home</Button>
+        </Link>
+
+      <Typography variant="h2" fontFamily={"Exo"} fontWeight={"bold"} padding={5}> Matches: {year} </Typography>
 
       <Container sx={{maxHeight: "75vh", justifyContent: "flex-start", maxWidth: '100% !important'}}>
         <Stack spacing={2} sx={{margin: "auto", width: "50%", py: "20px"}}>

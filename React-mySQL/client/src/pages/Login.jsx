@@ -4,6 +4,8 @@ import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Button from '@mui/material/Button';
+
 const Login = ({ role, onSetRole, username, onSetUsername }) => {
   const navigate = useNavigate();
   const [credential, setCredential] = useState({
@@ -43,11 +45,11 @@ const Login = ({ role, onSetRole, username, onSetUsername }) => {
   //const { role } = this.props;
   return (
     <div className="form">
-      <button className="login_back">
-        <Link to={`/`}>Home</Link>
-      </button>
+        <Link to={`/`}>
+            <Button variant="contained" size="medium" sx={{m: 1, fontFamily:"Exo", mb:5, mt:0}} >Home</Button>
+        </Link>
       <h1>Login</h1>
-      <p>username: </p>
+      <p>Username: </p>
       <input
         type="text"
         placeholder="username"
@@ -55,7 +57,7 @@ const Login = ({ role, onSetRole, username, onSetUsername }) => {
         name="username"
       />
       <p></p>
-      <p>password: </p>
+      <p>Password: </p>
       <input
         type="text"
         placeholder="password"
@@ -63,7 +65,8 @@ const Login = ({ role, onSetRole, username, onSetUsername }) => {
         name="password"
       />
       <p></p>
-      <button onClick={handleLoginClick}>Login</button>
+      <Button onClick={handleLoginClick} variant="contained" size="medium" sx={{m: 1, fontFamily:"Exo", mb:5, mt:2}} >Login</Button>
+      {/* <button onClick={handleLoginClick}>Login</button> */}
       <p>{credentialMsg}</p>
     </div>
   );

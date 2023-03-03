@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 export default function MatchCard({ content }) {
   return (
-    <Card>
+    <Card variant="outlined">
       <CardContent
         sx={{ flexGrow: 1, width: "auto", margin: "auto" }}
         style={{
@@ -19,16 +19,19 @@ export default function MatchCard({ content }) {
           justifyContent: "space-between",
         }}
       >
-        <Typography gutterBottom variant="h6" component="div">
+        <Typography gutterBottom variant="h6" component="div" align="left" fontFamily={"Exo"}>
           <b>{content.team1}</b> {content.score1} | {content.score2}{" "}
           <b>{content.team2}</b>
-          <p>date: {content.date}</p>
+        </Typography>
+
+        <Typography gutterBottom variant="body" component="div" align="left">
+          <p> <b>Date:</b> {content.date}</p>
           <p>
-            start time: {content.hour}:{content.minute}
+          <b>Start Time:</b> {content.hour}:{content.minute}
           </p>
-          <p>city: {content.city}</p>
-          <p>temperature: {content.temperature}F</p>
-          <p>tickets sold: {content.tickets}</p>
+          <p> <b>City:</b> {content.city}</p>
+          <p> <b>Temperature:</b> {content.temperature}F</p>
+          <p> <b>Tickets Sold:</b> {content.tickets}</p>
         </Typography>
         <Typography gutterBottom variant="h5" component="div"></Typography>
       </CardContent>

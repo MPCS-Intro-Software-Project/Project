@@ -6,6 +6,8 @@ import axios from "axios";
 import Header from "../modules/Header";
 import Typography from "@mui/material/Typography";
 import { Container } from "@mui/system";
+import Button from '@mui/material/Button';
+
 const TeamPage = ({role, onSetRole}) => {
   const [tournament, setTournament] = useState([]);
 
@@ -37,9 +39,9 @@ const TeamPage = ({role, onSetRole}) => {
     <Container sx={{height: "100vh", maxWidth: '100% !important', mt: "200px", mb: "20px", overflowY: "auto"}}>
       <Header role={role} handleLogoutClick={handleLogoutClick}/>
       <p></p>
-      <button className="login_back">
-        <Link to={`/`}>Home</Link>
-      </button>
+      <Link to={`/`}>
+            <Button variant="contained" size="medium" sx={{m: 8, fontFamily:"Exo", mb:5}} >Home</Button>
+        </Link>
       <h1>Teams of Year {year}</h1>
       <div className="matches">
         {tournament.map((tournament) => (

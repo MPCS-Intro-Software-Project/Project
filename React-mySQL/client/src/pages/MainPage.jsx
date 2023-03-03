@@ -45,7 +45,7 @@ const MainPage = ({ role, onSetRole }) => {
 
       <Header role={role} onLogoutClick={handleLogoutClick}/>
       <p></p>
-      <Box sx={{pt: 20, pb: 6}}>
+      <Box sx={{pt: 12, pb: 0}}>
         <Container maxWidth="sm">
           <Typography
             component="h1"
@@ -53,11 +53,18 @@ const MainPage = ({ role, onSetRole }) => {
             align="center"
             color="text.primary"
             gutterBottom
+            fontFamily={'Exo'}
+            fontWeight={"bold"}
+            fontSize={"600%"}
           >
-            Tournaments
+            FIFA
           </Typography>
-          <Typography variant="h5" align="center" color="text.secondary" paragraph>
-            Welcome to FIFA! More text can go here.
+          <Typography variant="h5" align="center" color="text.secondary" paragraph fontFamily={"Exo"}>
+            Welcome to FIFA, the International Home for Football!
+          </Typography>
+
+          <Typography variant="h5" align="center" color="text.secondary" paragraph fontFamily={"Exo"} fontWeight={"bold"} marginBottom={0} marginTop={10}>
+            View Tournaments Below:
           </Typography>
         </Container>
       </Box>
